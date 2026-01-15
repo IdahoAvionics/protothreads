@@ -434,13 +434,23 @@ struct pt {
  *
  * \hideinitializer
  */
+// modified 9/26/23 for priority scheduler
+// this will be set to zero by the scheduler,
+// and set to one, if a thread actually executes
+int pt_executed, pt_executed1 ;
+//
 #define PT_YIELD(pt)				\
   do {						\
     PT_YIELD_FLAG = 0;				\
     LC_SET((pt)->lc);				\
     if(PT_YIELD_FLAG == 0) {			\
       return PT_YIELDED;			\
-    }						\
+    }	 \
+    if(get_core_num()==1){ \
+    pt_executed1 = 1;;\
+    }  else {\
+      pt_executed = 1;\
+    }\
   } while(0)
 
 /**
@@ -460,9 +470,16 @@ struct pt {
     PT_YIELD_FLAG = 0;				\
     LC_SET((pt)->lc);				\
     if((PT_YIELD_FLAG == 0) || !(cond)) {	\
-      return PT_YIELDED;                        \
-    }						\
+      return PT_YIELDED;                  \
+    }	\
+    if(get_core_num()==1){ \
+    pt_executed1 = 1;\
+    }  else {\
+      pt_executed = 1;\
+    }\
   } while(0)
+
+  /**/
 
 /** @} */
 
@@ -560,7 +577,7 @@ struct pt_sem {
 //
 #define PT_YIELD_INTERVAL(interval_time)  \
     do { \
-    PT_YIELD_UNTIL(pt, (time_us_64() >= pt_interval_marker)); \
+    PT_YIELD_UNTIL(pt, (uint32_t)(time_us_64() >= pt_interval_marker)); \
     pt_interval_marker = time_us_64() + (uint64_t)interval_time; \
     } while(0);
 //
@@ -588,6 +605,11 @@ spin_lock_t * sem_lock ;
       spin_unlock_unsafe (sem_lock); 	\
       return PT_YIELDED;      \
     }		\
+   if(get_core_num()==1){ \
+    pt_executed1 = 1;;\
+    }  else {\
+      pt_executed = 1;\
+    }\
     --(s)->count;	\
     spin_unlock_unsafe (sem_lock); 	\
   } while(0)
@@ -626,6 +648,11 @@ spin_lock_t * lock_lock ;
       spin_unlock_unsafe (lock_lock) ; \
       return PT_YIELDED;                        \
   }						\
+  if(get_core_num()==1){ \
+    pt_executed1 = 1;;\
+    }  else {\
+      pt_executed = 1;\
+    }\
   spin_lock_unsafe_blocking (s); \
   spin_unlock_unsafe (lock_lock) ; \
 } while(0)
@@ -752,8 +779,19 @@ SOFTWARE.
 
 // choose schedule method
 #define SCHED_ROUND_ROBIN 0
-#define SCHED_RATE 1
+#define SCHED_PRIORITY    1
+// default is round robin
 int pt_sched_method = SCHED_ROUND_ROBIN ;
+
+// =========================================
+// If defined, accumulates execution stats, 
+//    but slows down scheduler!!
+#define sched_stats
+int sched_thread_stats[MAX_THREADS], sched_thread_stats1[MAX_THREADS] ;
+uint64_t sched_thread_time[MAX_THREADS], thread_time ;
+uint64_t sched_thread_time1[MAX_THREADS], thread_time1 ;
+int sched_count, sched_count1 ;
+// =========================================
 
 static PT_THREAD (protothread_sched(struct pt *pt))
 {   
@@ -775,8 +813,41 @@ static PT_THREAD (protothread_sched(struct pt *pt))
           // Never yields! 
           // NEVER exit while!
         } // END WHILE(1)
-    } //end if (pt_sched_method==RR)       
-     
+    } //end if (pt_sched_method==RR)     
+    //  
+    if (pt_sched_method==SCHED_PRIORITY){
+        while(1) {
+          // test stupid round-robin 
+          // on all defined threads
+          struct ptx *ptx = &pt_thread_list[0];
+
+          #ifdef sched_stats
+           sched_count++ ;
+          #endif
+
+          // step thru all defined threads
+          // -- loop can have more than one initialization or increment/decrement, 
+          // -- separated using comma operator. But it can have only one condition.
+          for (i=0; i<pt_task_count; i++, ptx++ ){
+              // zero execute flag
+              pt_executed = 0;
+              thread_time = time_us_64();
+              // call thread function
+              (pt_thread_list[i].pf)(&ptx->pt); 
+              // if there was execution, then restart execution list
+              if (pt_executed==1){
+                #ifdef sched_stats
+                  sched_thread_stats[i]++ ;
+                  sched_thread_time[i] += (time_us_64()-thread_time);
+                #endif
+                break ;
+              }
+          }
+          // Never yields! 
+          // NEVER exit while!
+        } // END WHILE(1)
+    } //end if (pt_sched_method==priority) 
+    
     PT_END(pt);
 } // scheduler thread
 
@@ -803,7 +874,40 @@ static PT_THREAD (protothread_sched1(struct pt *pt))
           // Never yields! 
           // NEVER exit while!
         } // END WHILE(1)
-    } // end if(pt_sched_method==SCHED_ROUND_ROBIN)      
+    } // end if(pt_sched_method==SCHED_ROUND_ROBIN)    
+    //
+    if (pt_sched_method==SCHED_PRIORITY){
+        while(1) {
+          // test stupid round-robin 
+          // on all defined threads
+          struct ptx *ptx = &pt_thread_list1[0];
+
+          #ifdef sched_stats
+           sched_count1++ ;
+          #endif
+
+          // step thru all defined threads
+          // -- loop can have more than one initialization or increment/decrement, 
+          // -- separated using comma operator. But it can have only one condition.
+          for (i=0; i<pt_task_count1; i++, ptx++ ){
+              // zero execute flag
+              pt_executed1 = 0;
+              thread_time1 = time_us_64();
+              // call thread function
+              (pt_thread_list1[i].pf)(&ptx->pt); 
+              // if there was execution, then restart execution list
+              if (pt_executed1==1){
+                #ifdef sched_stats
+                  sched_thread_stats1[i]++ ;
+                  sched_thread_time1[i] += (time_us_64()-thread_time1);
+                #endif
+                break ;
+              }
+          }
+          // Never yields! 
+          // NEVER exit while!
+        } // END WHILE(1)
+    } //end if (pt_sched_method==priority)   
      
     PT_END(pt);
 } // scheduler1 thread
