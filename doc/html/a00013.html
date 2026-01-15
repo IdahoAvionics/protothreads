@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
-<title>The Protothreads Library 1.3: pt.h File Reference</title>
+<title>The Protothreads Library 1.4: pt.h File Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -40,7 +40,7 @@ Definition in file <a class="el" href="a00022.html">pt.h</a>.
 <tr><td colspan="2"><br><h2>Declaration and definition</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g3d4c8bd4aada659eb34f5d2ffd3e7901">PT_THREAD</a>(name_args)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Declaration of a protothread function.  <a href="a00014.html#g3d4c8bd4aada659eb34f5d2ffd3e7901"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Declaration of a protothread.  <a href="a00014.html#g3d4c8bd4aada659eb34f5d2ffd3e7901"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g2ffbb9e554e08a343ae2f9de4bedfdfc">PT_BEGIN</a>(<a class="el" href="a00005.html">pt</a>)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Declare the start of a protothread inside the C function implementing the protothread.  <a href="a00014.html#g2ffbb9e554e08a343ae2f9de4bedfdfc"></a><br></td></tr>
@@ -83,17 +83,17 @@ Definition in file <a class="el" href="a00022.html">pt.h</a>.
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="g7b5319b5b65761a845fcd1500fde4cdc"></a><!-- doxytag: member="pt.h::PT_WAITING" ref="g7b5319b5b65761a845fcd1500fde4cdc" args="" -->
 #define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g7b5319b5b65761a845fcd1500fde4cdc">PT_WAITING</a>&nbsp;&nbsp;&nbsp;0</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="ge469332907e0617d72d5e2dd4297119d"></a><!-- doxytag: member="pt.h::PT_YIELDED" ref="ge469332907e0617d72d5e2dd4297119d" args="" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ge469332907e0617d72d5e2dd4297119d">PT_YIELDED</a>&nbsp;&nbsp;&nbsp;1</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="gcfae9053e5c107a1aed6b228c917d2ea"></a><!-- doxytag: member="pt.h::PT_EXITED" ref="gcfae9053e5c107a1aed6b228c917d2ea" args="" -->
-#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gcfae9053e5c107a1aed6b228c917d2ea">PT_EXITED</a>&nbsp;&nbsp;&nbsp;1</td></tr>
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gcfae9053e5c107a1aed6b228c917d2ea">PT_EXITED</a>&nbsp;&nbsp;&nbsp;2</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="g9ff1e8936a8a26bff54c05f8a989b93b"></a><!-- doxytag: member="pt.h::PT_ENDED" ref="g9ff1e8936a8a26bff54c05f8a989b93b" args="" -->
-#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g9ff1e8936a8a26bff54c05f8a989b93b">PT_ENDED</a>&nbsp;&nbsp;&nbsp;2</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="ge469332907e0617d72d5e2dd4297119d"></a><!-- doxytag: member="pt.h::PT_YIELDED" ref="ge469332907e0617d72d5e2dd4297119d" args="" -->
-#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ge469332907e0617d72d5e2dd4297119d">PT_YIELDED</a>&nbsp;&nbsp;&nbsp;3</td></tr>
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g9ff1e8936a8a26bff54c05f8a989b93b">PT_ENDED</a>&nbsp;&nbsp;&nbsp;3</td></tr>
 
 </table>
-<hr size="1"><address style="align: right;"><small>Generated on Sat Jun 3 22:11:20 2006 for The Protothreads Library 1.3 by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Mon Oct 2 10:06:29 2006 for The Protothreads Library 1.4 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.6 </small></address>
 </body>

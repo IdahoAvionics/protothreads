@@ -6,10 +6,10 @@ Default Window=main
 Default topic=main.html
 Index file=index.hhk
 Language=0x409 English (United States)
-Title=The Protothreads Library 1.3
+Title=The Protothreads Library 1.4
 
 [WINDOWS]
-main="The Protothreads Library 1.3","index.hhc","index.hhk","main.html","main.html",,,,,0x23520,,0x387e,,,,,,,,0
+main="The Protothreads Library 1.4","index.hhc","index.hhk","main.html","main.html",,,,,0x23520,,0x387e,,,,,,,,0
 
 [FILES]
 main.html

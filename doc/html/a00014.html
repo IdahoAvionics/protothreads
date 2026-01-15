@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
-<title>The Protothreads Library 1.3: Protothreads</title>
+<title>The Protothreads Library 1.4: Protothreads</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -46,7 +46,7 @@ This file in turn includes the actual implementation of local continuations, whi
 <tr><td colspan="2"><br><h2>Declaration and definition</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g3d4c8bd4aada659eb34f5d2ffd3e7901">PT_THREAD</a>(name_args)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Declaration of a protothread function.  <a href="#g3d4c8bd4aada659eb34f5d2ffd3e7901"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Declaration of a protothread.  <a href="#g3d4c8bd4aada659eb34f5d2ffd3e7901"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g2ffbb9e554e08a343ae2f9de4bedfdfc">PT_BEGIN</a>(<a class="el" href="a00005.html">pt</a>)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Declare the start of a protothread inside the C function implementing the protothread.  <a href="#g2ffbb9e554e08a343ae2f9de4bedfdfc"></a><br></td></tr>
@@ -89,14 +89,14 @@ This file in turn includes the actual implementation of local continuations, whi
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="g7b5319b5b65761a845fcd1500fde4cdc"></a><!-- doxytag: member="pt::PT_WAITING" ref="g7b5319b5b65761a845fcd1500fde4cdc" args="" -->
 #define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g7b5319b5b65761a845fcd1500fde4cdc">PT_WAITING</a>&nbsp;&nbsp;&nbsp;0</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="ge469332907e0617d72d5e2dd4297119d"></a><!-- doxytag: member="pt::PT_YIELDED" ref="ge469332907e0617d72d5e2dd4297119d" args="" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ge469332907e0617d72d5e2dd4297119d">PT_YIELDED</a>&nbsp;&nbsp;&nbsp;1</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="gcfae9053e5c107a1aed6b228c917d2ea"></a><!-- doxytag: member="pt::PT_EXITED" ref="gcfae9053e5c107a1aed6b228c917d2ea" args="" -->
-#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gcfae9053e5c107a1aed6b228c917d2ea">PT_EXITED</a>&nbsp;&nbsp;&nbsp;1</td></tr>
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#gcfae9053e5c107a1aed6b228c917d2ea">PT_EXITED</a>&nbsp;&nbsp;&nbsp;2</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="g9ff1e8936a8a26bff54c05f8a989b93b"></a><!-- doxytag: member="pt::PT_ENDED" ref="g9ff1e8936a8a26bff54c05f8a989b93b" args="" -->
-#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g9ff1e8936a8a26bff54c05f8a989b93b">PT_ENDED</a>&nbsp;&nbsp;&nbsp;2</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="ge469332907e0617d72d5e2dd4297119d"></a><!-- doxytag: member="pt::PT_YIELDED" ref="ge469332907e0617d72d5e2dd4297119d" args="" -->
-#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#ge469332907e0617d72d5e2dd4297119d">PT_YIELDED</a>&nbsp;&nbsp;&nbsp;3</td></tr>
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00014.html#g9ff1e8936a8a26bff54c05f8a989b93b">PT_ENDED</a>&nbsp;&nbsp;&nbsp;3</td></tr>
 
 </table>
 <hr><h2>Define Documentation</h2>
@@ -135,7 +135,7 @@ This macro is used to declare the starting point of a protothread. It should be 
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00114">114</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00115">115</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="g7b04a0035bef29d905496c23bae066d2"></a><!-- doxytag: member="pt.h::PT_END" ref="g7b04a0035bef29d905496c23bae066d2" args="(pt)" --><p>
@@ -173,7 +173,7 @@ This macro is used for declaring that a protothread ends. It must always be used
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00126">126</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00127">127</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="g905451249dca72ce0385bf2a9ff178ee"></a><!-- doxytag: member="pt.h::PT_EXIT" ref="g905451249dca72ce0385bf2a9ff178ee" args="(pt)" --><p>
@@ -211,7 +211,7 @@ This macro causes the protothread to exit. If the protothread was spawned by ano
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00245">245</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00246">246</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="ge6bae7dc0225468c8a5ac269df549892"></a><!-- doxytag: member="pt.h::PT_INIT" ref="ge6bae7dc0225468c8a5ac269df549892" args="(pt)" --><p>
@@ -250,7 +250,7 @@ Initializes a protothread. Initialization must be done prior to starting to exec
 <dl compact><dt><b>See also:</b></dt><dd><a class="el" href="a00014.html#g9e97a0b4d5cc7764d8e19758f5da53ae">PT_SPAWN()</a> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00078">78</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00080">80</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="gcd3ac045f0a4ae63412e3b3d8780e8ab"></a><!-- doxytag: member="pt.h::PT_RESTART" ref="gcd3ac045f0a4ae63412e3b3d8780e8ab" args="(pt)" --><p>
@@ -288,7 +288,7 @@ This macro will block and cause the running protothread to restart its execution
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00228">228</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00229">229</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="gfa82b860a64b67d25ab3abc21811896f"></a><!-- doxytag: member="pt.h::PT_SCHEDULE" ref="gfa82b860a64b67d25ab3abc21811896f" args="(f)" --><p>
@@ -326,7 +326,7 @@ This function shedules a protothread. The return value of the function is non-ze
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00270">270</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00271">271</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="g9e97a0b4d5cc7764d8e19758f5da53ae"></a><!-- doxytag: member="pt.h::PT_SPAWN" ref="g9e97a0b4d5cc7764d8e19758f5da53ae" args="(pt, child, thread)" --><p>
@@ -372,7 +372,7 @@ This macro spawns a child protothread and waits until it exits. The macro can on
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00205">205</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00206">206</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="g3d4c8bd4aada659eb34f5d2ffd3e7901"></a><!-- doxytag: member="pt.h::PT_THREAD" ref="g3d4c8bd4aada659eb34f5d2ffd3e7901" args="(name_args)" --><p>
@@ -400,9 +400,9 @@ Definition at line <a class="el" href="a00022.html#l00205">205</a> of file <a cl
     <td>
 
 <p>
-Declaration of a protothread function. 
+Declaration of a protothread. 
 <p>
-This macro is used to declare a protothread function. Protothreads function should be declared with this macro, but can also be declared as regular C functions that return an integer value.<p>
+This macro is used to declare a protothread. All protothreads must be declared with this macro.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>name_args</em>&nbsp;</td><td>The name and arguments of the C function implementing the protothread. </td></tr>
@@ -410,7 +410,7 @@ This macro is used to declare a protothread function. Protothreads function shou
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00099">99</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00100">100</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="g2f8f70c30b9ee08a103fbd69a4365c4c"></a><!-- doxytag: member="pt.h::PT_WAIT_THREAD" ref="g2f8f70c30b9ee08a103fbd69a4365c4c" args="(pt, thread)" --><p>
@@ -454,7 +454,7 @@ This macro schedules a child protothread. The current protothread will block unt
 <dl compact><dt><b>See also:</b></dt><dd><a class="el" href="a00014.html#g9e97a0b4d5cc7764d8e19758f5da53ae">PT_SPAWN()</a> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00191">191</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00192">192</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="g99e43010ec61327164466aa2d902de45"></a><!-- doxytag: member="pt.h::PT_WAIT_UNTIL" ref="g99e43010ec61327164466aa2d902de45" args="(pt, condition)" --><p>
@@ -496,7 +496,7 @@ This macro blocks the protothread until the specified condition is true.<p>
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00147">147</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00148">148</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="gad14bbbf092b90aa0a5a4f9169504a8d"></a><!-- doxytag: member="pt.h::PT_WAIT_WHILE" ref="gad14bbbf092b90aa0a5a4f9169504a8d" args="(pt, cond)" --><p>
@@ -538,7 +538,7 @@ This function blocks and waits while condition is true. See <a class="el" href="
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00166">166</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00167">167</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="g155cba6121323726d02c00284428fed6"></a><!-- doxytag: member="pt.h::PT_YIELD" ref="g155cba6121323726d02c00284428fed6" args="(pt)" --><p>
@@ -576,7 +576,7 @@ This function will yield the protothread, thereby allowing other processing to t
 </dl>
 
 <p>
-Definition at line <a class="el" href="a00022.html#l00289">289</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00290">290</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="ge3c821e3a388615528efda9d23c7d115"></a><!-- doxytag: member="pt.h::PT_YIELD_UNTIL" ref="ge3c821e3a388615528efda9d23c7d115" args="(pt, cond)" --><p>
@@ -617,10 +617,10 @@ Yield from the protothread until a condition occurs.
 </dl>
 This function will yield the protothread, until the specified condition evaluates to true. 
 <p>
-Definition at line <a class="el" href="a00022.html#l00309">309</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
+Definition at line <a class="el" href="a00022.html#l00310">310</a> of file <a class="el" href="a00022.html">pt.h</a>.    </td>
   </tr>
 </table>
-<hr size="1"><address style="align: right;"><small>Generated on Sat Jun 3 22:11:20 2006 for The Protothreads Library 1.3 by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Mon Oct 2 10:06:29 2006 for The Protothreads Library 1.4 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.6 </small></address>
 </body>

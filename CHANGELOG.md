@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4
+- A bug with the semantics of PT_SCHEDULE() is fixed: PT_SCHEDULE() now returns true both when a protothread is waiting and when it has yielded. (Thanks to Kevin Collins.)
+- Added a readme file for Visual C++ users which explains how protothreads may trigger a compiler bug and how to prevent this from happening. (Thanks to Tom Schmit.)
+
 ## 1.3
 - The return values from a protothread function can now be used to determine if the protothread is waiting, has yielded, exited, or ended.
 - Additional example program added to the distribution: example-small.c.
