@@ -30,7 +30,7 @@
  *
  * Author: Adam Dunkels <adam@sics.se>
  *
- * $Id: example-buffer.c,v 1.4 2005/10/06 07:57:08 adam Exp $
+ * $Id: example-buffer.c,v 1.5 2005/10/07 05:21:33 adam Exp $
  */
 
 #ifdef _WIN32
@@ -134,7 +134,7 @@ PT_THREAD(driver_thread(struct pt *pt))
   PT_INIT(&pt_consumer);
  
   PT_WAIT_THREAD(pt, producer(&pt_producer) &
-		     consumer(p&t_consumer));
+		     consumer(&pt_consumer));
  
   PT_END(pt);
 }
