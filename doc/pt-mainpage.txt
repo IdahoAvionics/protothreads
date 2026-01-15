@@ -40,6 +40,8 @@ Examples applications:
     
     - Sensor network nodes
 
+
+\sa \ref examples "Example programs"  
 \sa \ref pt "Protothreads API documentation"
     
 The protothreads library is released under a BSD-style license that
@@ -142,13 +144,13 @@ the architecture.
 The standard C implementation requires only two bytes of state per
 protothread and utilizes the C switch() statement in a non-obvious way
 that is similar to Duff's device. This implementation does, however,
-impose a slight restriction to the code that uses protothreads in that
-the code cannot use switch() statements itself.
+impose a slight restriction to the code that uses protothreads: a
+protothread cannot perform a blocking wait (PT_WAIT_UNTIL() or
+PT_YIELD()) inside a switch() statement.
 
 Certain compilers has C extensions that can be used to implement
 protothreads. GCC supports label pointers that can be used for this
 purpose. With this implementation, protothreads require 4 bytes of RAM
 per protothread.
-
 
 */

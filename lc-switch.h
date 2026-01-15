@@ -26,11 +26,11 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF 
  * SUCH DAMAGE. 
  *
- * This file is part of the protothreads library.
+ * This file is part of the Contiki operating system.
  * 
  * Author: Adam Dunkels <adam@sics.se>
  *
- * $Id: lc-switch.h,v 1.2 2005/02/24 10:36:59 adam Exp $
+ * $Id: lc-switch.h,v 1.3 2005/04/01 09:08:25 adam Exp $
  */
 
 /**
@@ -51,7 +51,6 @@
  *
  * This implementation borrows heavily from Simon Tatham's coroutines
  * implementation in C:
- *
  * http://www.chiark.greenend.org.uk/~sgtatham/coroutines.html
  */
 
@@ -64,13 +63,13 @@
 /** \hideinitializer */
 typedef unsigned short lc_t;
 
-#define LC_SET(s) case __LINE__: s = __LINE__
+#define LC_INIT(s) s = 0;
 
 #define LC_RESUME(s) switch(s) { case 0:
 
-#define LC_END(s) }
+#define LC_SET(s) s = __LINE__; case __LINE__: 
 
-#define LC_INIT(s) s = 0;
+#define LC_END(s) }
 
 #endif /* __LC_SWITCH_H__ */
 
