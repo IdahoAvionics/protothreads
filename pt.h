@@ -1,36 +1,34 @@
 /*
- * Copyright (c) 2004-2005, Swedish Institute of Computer Science.
- * All rights reserved. 
+ * Copyright (c) 2004-2006, Swedish Institute of Computer Science.
+ * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
- * modification, are permitted provided that the following conditions 
- * are met: 
- * 1. Redistributions of source code must retain the above copyright 
- *    notice, this list of conditions and the following disclaimer. 
- * 2. Redistributions in binary form must reproduce the above copyright 
- *    notice, this list of conditions and the following disclaimer in the 
- *    documentation and/or other materials provided with the distribution. 
- * 3. Neither the name of the Institute nor the names of its contributors 
- *    may be used to endorse or promote products derived from this software 
- *    without specific prior written permission. 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the Institute nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND 
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE 
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS 
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY 
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF 
- * SUCH DAMAGE. 
+ * THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
  *
- * This file is part of the Contiki operating system.
- * 
  * Author: Adam Dunkels <adam@sics.se>
  *
- * $Id: pt.h,v 1.4 2005/10/06 07:56:35 adam Exp $
+ * $Id: pt.h,v 1.6 2006/06/03 11:29:43 adam Exp $
  */
 
 /**
@@ -55,35 +53,15 @@ struct pt {
   lc_t lc;
 };
 
-#define PT_THREAD_WAITING 0
-#define PT_THREAD_EXITED  1
+#define PT_WAITING 0
+#define PT_EXITED  1
+#define PT_ENDED   2
+#define PT_YIELDED 3
 
 /**
- * Declaration of a protothread.
- *
- * This macro is used to declare a protothread. All protothreads must
- * be declared with this macro.
- *
- * Example:
- \code
- PT_THREAD(consumer(struct pt *p, int event)) {
-   PT_BEGIN(p);
-   while(1) {
-     PT_WAIT_UNTIL(p, event == AVAILABLE);
-     consume();
-     PT_WAIT_UNTIL(p, event == CONSUMED);
-     acknowledge_consumed();
-   }
-   PT_END(p);
- }
- \endcode
- *
- * \param name_args The name and arguments of the C function
- * implementing the protothread.
- *
- * \hideinitializer
+ * \name Initialization
+ * @{
  */
-#define PT_THREAD(name_args) char name_args
 
 /**
  * Initialize a protothread.
@@ -93,25 +71,32 @@ struct pt {
  *
  * \param pt A pointer to the protothread control structure.
  *
- * Example:
- *
- \code
- void main(void) {
-   struct pt p;
-   int event;
-   
-   PT_INIT(&p);
-   while(PT_SCHEDULE(consumer(&p, event))) {
-     event = get_event();
-   }
- }
- \endcode
- *
  * \sa PT_SPAWN()
  *
  * \hideinitializer
  */
 #define PT_INIT(pt)   LC_INIT((pt)->lc)
+
+/** @} */
+
+/**
+ * \name Declaration and definition
+ * @{
+ */
+
+/**
+ * Declaration of a protothread function.
+ *
+ * This macro is used to declare a protothread function. Protothreads
+ * function should be declared with this macro, but can also be
+ * declared as regular C functions that return an integer value.
+ *
+ * \param name_args The name and arguments of the C function
+ * implementing the protothread.
+ *
+ * \hideinitializer
+ */
+#define PT_THREAD(name_args) char name_args
 
 /**
  * Declare the start of a protothread inside the C function
@@ -124,24 +109,29 @@ struct pt {
  *
  * \param pt A pointer to the protothread control structure.
  *
- * Example:
+ * \hideinitializer
+ */
+#define PT_BEGIN(pt) { char PT_YIELD_FLAG = 1; LC_RESUME((pt)->lc)
+
+/**
+ * Declare the end of a protothread.
  *
- \code
- PT_THREAD(producer(struct pt *p, int event)) {
-   PT_BEGIN(p);
-   while(1) {
-     PT_WAIT_UNTIL(p, event == CONSUMED || event == DROPPED);
-     produce();
-     PT_WAIT_UNTIL(p, event == PRODUCED);
-   }
-   
-   PT_END(p);
- }
- \endcode
+ * This macro is used for declaring that a protothread ends. It must
+ * always be used together with a matching PT_BEGIN() macro.
+ *
+ * \param pt A pointer to the protothread control structure.
  *
  * \hideinitializer
  */
-#define PT_BEGIN(pt) { PT_YIELDING(); LC_RESUME((pt)->lc)
+#define PT_END(pt) LC_END((pt)->lc); PT_YIELD_FLAG = 0; \
+                   PT_INIT(pt); return PT_ENDED; }
+
+/** @} */
+
+/**
+ * \name Blocked wait
+ * @{
+ */
 
 /**
  * Block and wait until condition is true.
@@ -152,25 +142,13 @@ struct pt {
  * \param pt A pointer to the protothread control structure.
  * \param condition The condition.
  *
- * Example:
- \code
- PT_THREAD(seconds(struct pt *p)) {
-   PT_BEGIN(p);
-
-   PT_WAIT_UNTIL(p, time >= 2 * SECOND);
-   printf("Two seconds have passed\n");
-   
-   PT_END(p);
- }
- \endcode
- *
  * \hideinitializer
  */
 #define PT_WAIT_UNTIL(pt, condition)	        \
   do {						\
     LC_SET((pt)->lc);				\
     if(!(condition)) {				\
-      return PT_THREAD_WAITING;			\
+      return PT_WAITING;			\
     }						\
   } while(0)
 
@@ -187,6 +165,12 @@ struct pt {
  */
 #define PT_WAIT_WHILE(pt, cond)  PT_WAIT_UNTIL((pt), !(cond))
 
+/** @} */
+
+/**
+ * \name Hierarchical protothreads
+ * @{
+ */
 
 /**
  * Block and wait until a child protothread completes.
@@ -200,30 +184,9 @@ struct pt {
  * \param pt A pointer to the protothread control structure.
  * \param thread The child protothread with arguments
  *
- * Example:
- \code
- PT_THREAD(child(struct pt *p, int event)) {
-   PT_BEGIN(p);
-
-   PT_WAIT_UNTIL(p, event == EVENT1);   
-   
-   PT_END(p);
- }
-
- PT_THREAD(parent(struct pt *p, struct pt *child_pt, int event)) {
-   PT_BEGIN(p);
-
-   PT_INIT(child_pt);
-   
-   PT_WAIT_THREAD(p, child(child_pt, event));
-   
-   PT_END(p);
- }
- \endcode
- *
  * \sa PT_SPAWN()
  *
- * \hideinitializer 
+ * \hideinitializer
  */
 #define PT_WAIT_THREAD(pt, thread) PT_WAIT_WHILE((pt), PT_SCHEDULE(thread))
 
@@ -232,34 +195,6 @@ struct pt {
  *
  * This macro spawns a child protothread and waits until it exits. The
  * macro can only be used within a protothread.
- *
- * Example:
- \code
- static struct pt parent_pt, child_pt;
- int should_spawn_flag;
-
- PT_THREAD(child(struct pt *pt)) {
-   PT_BEGIN(pt);
-
-   while(all_items_processed()) {
-     process_item();
-     PT_WAIT_UNTIL(pt, item_processed());
-   }
-   
-   PT_END(pt);
- }
- 
- PT_THREAD(parent(void)) {
-   PT_BEGIN(&parent_pt);
-
-   if(should_spawn_flag) {
-     PT_SPAWN(&parent_pt, &child_pt, child(&child_pt));
-   }
-   
-   PT_END(&parent_pt);
- }
- \endcode
- *
  *
  * \param pt A pointer to the protothread control structure.
  * \param child A pointer to the child protothread's control structure.
@@ -272,6 +207,13 @@ struct pt {
     PT_INIT((child));				\
     PT_WAIT_THREAD((pt), (thread));		\
   } while(0)
+
+/** @} */
+
+/**
+ * \name Exiting and restarting
+ * @{
+ */
 
 /**
  * Restart the protothread.
@@ -286,7 +228,7 @@ struct pt {
 #define PT_RESTART(pt)				\
   do {						\
     PT_INIT(pt);				\
-    return PT_THREAD_WAITING;			\
+    return PT_WAITING;			\
   } while(0)
 
 /**
@@ -303,21 +245,15 @@ struct pt {
 #define PT_EXIT(pt)				\
   do {						\
     PT_INIT(pt);				\
-    return PT_THREAD_EXITED;			\
+    return PT_EXITED;			\
   } while(0)
 
-/**
- * Declare the end of a protothread.
- *
- * This macro is used for declaring that a protothread ends. It must
- * always be used together with a matching PT_BEGIN() macro.
- *
- * \param pt A pointer to the protothread control structure.
- *
- * \hideinitializer
- */
-#define PT_END(pt) LC_END((pt)->lc); pt_yielded = 0; PT_EXIT(pt); }
+/** @} */
 
+/**
+ * \name Calling a protothread
+ * @{
+ */
 
 /**
  * Schedule a protothread.
@@ -326,55 +262,19 @@ struct pt {
  * function is non-zero if the protothread is running or zero if the
  * protothread has exited.
  *
- * Example
- \code
- void main(void) {
-   struct pt p;
-   int event;
-   
-   PT_INIT(&p);
-   while(PT_SCHEDULE(consumer(&p, event))) {
-     event = get_event();
-   }   
- }
- \endcode
- *
  * \param f The call to the C function implementing the protothread to
  * be scheduled
  *
  * \hideinitializer
  */
-#define PT_SCHEDULE(f) ((f) == PT_THREAD_WAITING)
+#define PT_SCHEDULE(f) ((f) == PT_WAITING)
+
+/** @} */
 
 /**
- * Declarare that a protothread can yield.
- *
- * If a protothread should be able to yield with the PT_YIELD()
- * statement, this flag must be placed first in the protothread's
- * function body.
- *
- * Example:
- \code
- static
- PT_THREAD(loop_thread(struct pt *pt))
- {
-   PT_YIELDING();
-   static int i;
-
-   PT_BEGIN(pt);
-   
-   for(i = 0; i < 200; ++i) {
-     handle_item(i);
-     PT_YIELD(pt);
-   }
-   
-   PT_END(pt);
- }
- \endcode
- *
- * \hideinitializer
+ * \name Yielding from a protothread
+ * @{
  */
-#define PT_YIELDING() char pt_yielded = 1
 
 /**
  * Yield from the current protothread.
@@ -382,47 +282,41 @@ struct pt {
  * This function will yield the protothread, thereby allowing other
  * processing to take place in the system.
  *
- * \note The PT_YIELDING() flag must be placed first in the
- * protothread's body if the PT_YIELD() function should be used.
- *
- * Example
- \code
-static
-PT_THREAD(fade(struct pt *pt))
-{
-  PT_YIELDING();
-  static int delay;
-  
-  PT_BEGIN(pt);
-  
-  for(delay = 3980; delay > 20; delay -= 20) {
-    leds_red(LEDS_ON);
-    clock_delay(4000 - delay);
-    leds_red(LEDS_OFF);
-    clock_delay(delay);
-    PT_YIELD(pt);
-  }
-  
-  PT_END(pt);
-}
- \endcode
  * \param pt A pointer to the protothread control structure.
  *
  * \hideinitializer
  */
 #define PT_YIELD(pt)				\
   do {						\
-    pt_yielded = 0;				\
-    PT_WAIT_UNTIL(pt, pt_yielded);		\
+    PT_YIELD_FLAG = 0;				\
+    LC_SET((pt)->lc);				\
+    if(PT_YIELD_FLAG == 0) {			\
+      return PT_YIELDED;			\
+    }						\
   } while(0)
 
+/**
+ * \brief      Yield from the protothread until a condition occurs.
+ * \param pt   A pointer to the protothread control structure.
+ * \param cond The condition.
+ *
+ *             This function will yield the protothread, until the
+ *             specified condition evaluates to true.
+ *
+ *
+ * \hideinitializer
+ */
 #define PT_YIELD_UNTIL(pt, cond)		\
   do {						\
-   pt_yielded = 0;				\
-   PT_WAIT_UNTIL(pt, pt_yielded && (cond));	\
+    PT_YIELD_FLAG = 0;				\
+    LC_SET((pt)->lc);				\
+    if((PT_YIELD_FLAG == 0) || !(cond)) {	\
+      return PT_YIELDED;			\
+    }						\
   } while(0)
 
-#endif /* __PT_H__ */
+/** @} */
 
+#endif /* __PT_H__ */
 
 /** @} */

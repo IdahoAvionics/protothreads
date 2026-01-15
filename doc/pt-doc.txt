@@ -14,6 +14,16 @@ typically also is contained in a single header file.
 \defgroup examples Examples
 @{
 
+\section example-small A small example
+
+This first example shows a very simple program: two protothreads
+waiting for each other to toggle two flags. The code illustrates how
+to write protothreads code, how to initialize protothreads, and how to
+schedule them.
+
+\include example-small.c
+
+
 \section example-code-lock A code-lock
 This example shows how to implement a simple code lock - the kind of
 device that is placed next to doors and that you have to push a four

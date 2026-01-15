@@ -41,10 +41,11 @@ Documentation can be found in the doc/ subdirectory.
 Two example programs illustrating the use of protothreads can be found
 in this directory:
 
+   example-small.c         A small example showing how to use protothreads
    example-buffer.c        The bounded buffer problem with protothreads
    example-codelock.c	   A code lock with simulated key input
 
 To compile the examples, simply run "make".
 
 
-Adam Dunkels, 24 February 2005   
+Adam Dunkels, 3 June 2006
