@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2
+- The PT_YIELDING() macro is now no longer needed.
+- Bugfixes: the implementation of PT_SCHEDULE() was missing a parenthesis which caused one of the example programs (example-buffer.c) to fail. (Thanks to Leonardo Palozzi for finding and fixing it!)
+
 # 1.1
 - Added PT_YIELD() functionality that allows a protothread to yield the CPU. (Thanks to Glen Worstell for suggesting this).
 - The examples should now compile under MS Windows as well. (Thanks to Oliver Schmidt).
