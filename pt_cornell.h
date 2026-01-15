@@ -540,26 +540,28 @@ struct pt_sem {
 //=====================================================================
 //=== BRL4 additions for rp2040 =======================================
 //=====================================================================
-
+// NOTE: modifed from version 1.1.1 !!!! for 64 bits
 // macro to make a thread execution pause in usec
-// max time of about one hour
+// max time of about 300,000 years
+// uint64_t time_us_64 (void)
+
 #define PT_YIELD_usec(delay_time)  \
-    do { static unsigned int time_thread ;\
-    time_thread = timer_hw->timerawl + (unsigned int)delay_time ; \
-    PT_YIELD_UNTIL(pt, (timer_hw->timerawl >= time_thread)); \
+    do { static uint64_t time_thread ;\
+    time_thread = time_us_64() + (uint64_t)delay_time ; \
+    PT_YIELD_UNTIL(pt, (time_us_64() >= time_thread)); \
     } while(0);
 
 // macro to return system time
-#define PT_GET_TIME_usec() (timer_hw->timerawl)
+#define PT_GET_TIME_usec() (time_us_64())
 
 // macros for interval yield
 // attempts to make interval equal to specified value
-#define PT_INTERVAL_INIT() static unsigned int pt_interval_marker
+#define PT_INTERVAL_INIT() static uint64_t pt_interval_marker
 //
 #define PT_YIELD_INTERVAL(interval_time)  \
     do { \
-    PT_YIELD_UNTIL(pt, (timer_hw->timerawl >= pt_interval_marker)); \
-    pt_interval_marker = timer_hw->timerawl + (unsigned int)interval_time; \
+    PT_YIELD_UNTIL(pt, (time_us_64() >= pt_interval_marker)); \
+    pt_interval_marker = time_us_64() + (uint64_t)interval_time; \
     } while(0);
 //
 // =================================================================
