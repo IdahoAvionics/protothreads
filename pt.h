@@ -30,7 +30,7 @@
  * 
  * Author: Adam Dunkels <adam@sics.se>
  *
- * $Id: pt.h,v 1.3 2005/04/01 09:08:25 adam Exp $
+ * $Id: pt.h,v 1.4 2005/10/06 07:56:35 adam Exp $
  */
 
 /**
@@ -141,7 +141,7 @@ struct pt {
  *
  * \hideinitializer
  */
-#define PT_BEGIN(pt) LC_RESUME((pt)->lc)
+#define PT_BEGIN(pt) { PT_YIELDING(); LC_RESUME((pt)->lc)
 
 /**
  * Block and wait until condition is true.
@@ -309,14 +309,14 @@ struct pt {
 /**
  * Declare the end of a protothread.
  *
- * This macro is used for declaring that a protothread ends. It should
+ * This macro is used for declaring that a protothread ends. It must
  * always be used together with a matching PT_BEGIN() macro.
  *
  * \param pt A pointer to the protothread control structure.
  *
  * \hideinitializer
  */
-#define PT_END(pt) LC_END((pt)->lc); PT_EXIT(pt)
+#define PT_END(pt) LC_END((pt)->lc); pt_yielded = 0; PT_EXIT(pt); }
 
 
 /**
@@ -344,7 +344,7 @@ struct pt {
  *
  * \hideinitializer
  */
-#define PT_SCHEDULE(f) (f == PT_THREAD_WAITING)
+#define PT_SCHEDULE(f) ((f) == PT_THREAD_WAITING)
 
 /**
  * Declarare that a protothread can yield.
@@ -414,6 +414,12 @@ PT_THREAD(fade(struct pt *pt))
   do {						\
     pt_yielded = 0;				\
     PT_WAIT_UNTIL(pt, pt_yielded);		\
+  } while(0)
+
+#define PT_YIELD_UNTIL(pt, cond)		\
+  do {						\
+   pt_yielded = 0;				\
+   PT_WAIT_UNTIL(pt, pt_yielded && (cond));	\
   } while(0)
 
 #endif /* __PT_H__ */
