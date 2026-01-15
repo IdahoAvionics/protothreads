@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.1
+- A small typo in example-buffer.c (thanks to a lot of people for reporting this).
+
 ## 1.2
 - The PT_YIELDING() macro is now no longer needed.
 - Bugfixes: the implementation of PT_SCHEDULE() was missing a parenthesis which caused one of the example programs (example-buffer.c) to fail. (Thanks to Leonardo Palozzi for finding and fixing it!)
