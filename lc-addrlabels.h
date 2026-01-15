@@ -26,11 +26,11 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF 
  * SUCH DAMAGE. 
  *
- * This file is part of the protothreads library.
+ * This file is part of the Contiki operating system.
  * 
  * Author: Adam Dunkels <adam@sics.se>
  *
- * $Id: lc-addrlabels.h,v 1.2 2005/02/24 10:36:59 adam Exp $
+ * $Id: lc-addrlabels.h,v 1.3 2005/04/01 09:08:25 adam Exp $
  */
 
 /**
@@ -51,7 +51,6 @@
  * corresponding to a particular C label.
  *
  * For more information, see the GCC documentation:
- *
  * http://gcc.gnu.org/onlinedocs/gcc/Labels-as-Values.html
  *
  */
@@ -62,6 +61,15 @@
 /** \hideinitializer */
 typedef void * lc_t;
 
+#define LC_INIT(s) s = NULL
+
+#define LC_RESUME(s)				\
+  do {						\
+    if(s != NULL) {				\
+      goto *s;					\
+    }						\
+  } while(0)
+
 #define LC_CONCAT2(s1, s2) s1##s2
 #define LC_CONCAT(s1, s2) LC_CONCAT2(s1, s2)
 
@@ -71,15 +79,6 @@ typedef void * lc_t;
     (s) = &&LC_CONCAT(LC_LABEL, __LINE__);	\
   } while(0)
 
-#define LC_RESUME(s)				\
-  do {						\
-    if(s != NULL) {				\
-      goto *s;					\
-    }						\
-  } while(0)
-
 #define LC_END(s)
-
-#define LC_INIT(s) s = NULL
 
 #endif /* __LC_ADDRLABELS_H__ */
