@@ -18,27 +18,17 @@ machines or full multi-threading. Protothreads provides conditional
 blocking inside C functions.
 
 Main features:
-
-    - No machine specific code - the protothreads library is pure C
-
-    - Does not use error-prone functions such as longjmp()
-        
-    - Very small RAM overhead - only two bytes per protothread
-    
-    - Can be used with or without an OS
-    
-    - Provides blocking wait without full multi-threading or
-      stack-switching
+- No machine specific code - the protothreads library is pure C
+- Does not use error-prone functions such as longjmp()
+- Very small RAM overhead - only two bytes per protothread
+- Can be used with or without an OS
+- Provides blocking wait without full multi-threading or stack-switching
 
 Examples applications:
-
-    - Memory constrained systems
-    
-    - Event-driven protocol stacks
-    
-    - Deeply embedded systems
-    
-    - Sensor network nodes
+- Memory constrained systems
+- Event-driven protocol stacks
+- Deeply embedded systems
+- Sensor network nodes
 
 
 \sa \ref examples "Example programs"  
@@ -132,9 +122,9 @@ the point where the local continuation was set.
 
 Local continuations can be implemented in a variety of ways:
 
-   -# by using machine specific assembler code,
-   -# by using standard C constructs, or
-   -# by using compiler extensions. 
+-# by using machine specific assembler code,
+-# by using standard C constructs, or
+-# by using compiler extensions.
 
 The first way works by saving and restoring the processor state,
 except for stack pointers, and requires between 16 and 32 bytes of

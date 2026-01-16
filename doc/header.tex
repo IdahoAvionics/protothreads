@@ -1,5 +1,11 @@
 \documentclass[a4paper]{article}
-\usepackage{a4wide}
+\nonstopmode
+\usepackage{cmap}% Make PDF searchable and copyable
+\usepackage[T1]{fontenc}% Proper font encoding for searchability
+\newcommand{\+}{}% Allow optional line breaks in identifiers (Doxygen escape)
+\newcommand{\clearemptydoublepage}{\clearpage}% Doxygen uses book-class command
+\newcommand{\backmatter}{}% Doxygen uses book-class command
+\usepackage[a4paper, margin=3cm]{geometry}
 \usepackage{makeidx}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
@@ -24,8 +30,9 @@
            ]{hyperref}
 \fi
 \usepackage{doxygen}
+\usepackage{doxygen-extra}
 \makeindex
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{3}
 \renewcommand{\footrulewidth}{0.4pt}
 \begin{document}
 \begin{titlepage}
@@ -33,7 +40,7 @@
 \begin{center}
 {\Huge Protothreads}\\
 \vspace*{1cm}
-{\LARGE The Protothreads Library 1.3 Reference Manual}\\
+{\LARGE The Protothreads Library 1.4 Reference Manual}\\
 \vspace*{3cm}
 {\Large June 2006}\\
 \vspace*{2cm}

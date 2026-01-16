@@ -1,0 +1,5 @@
+% Override DoxyParamCaption to avoid line break before single parameters
+\renewenvironment{DoxyParamCaption}{%
+  \renewcommand{\item}[3][]{##1{\em ##2}##3}%
+}{%
+}
