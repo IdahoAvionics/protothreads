@@ -51,14 +51,40 @@
 
 #include "lc.h"
 
+/**
+ * Protothread control structure.
+ *
+ * This structure is used to store the state of a protothread. It should be
+ * declared as a local variable or as a member of a larger structure. The
+ * contents of this structure are internal to the protothread library and
+ * should not be accessed directly by the user.
+ *
+ * \sa PT_INIT()
+ */
 struct pt {
   lc_t lc;
 };
 
+/**
+ * \name Protothread status codes
+ *
+ * These values are returned by a protothread to indicate its current status.
+ * @{
+ */
+
+/** The protothread is waiting for a condition. */
 #define PT_WAITING 0
+
+/** The protothread has yielded. */
 #define PT_YIELDED 1
+
+/** The protothread has exited via PT_EXIT(). */
 #define PT_EXITED  2
+
+/** The protothread has ended normally. */
 #define PT_ENDED   3
+
+/** @} */
 
 /**
  * \name Initialization

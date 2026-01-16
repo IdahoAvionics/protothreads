@@ -162,6 +162,16 @@ PT_THREAD(driver_thread(struct pt *pt))
 
 #include "pt.h"
 
+/**
+ * Semaphore control structure.
+ *
+ * This structure represents a counting semaphore for use with protothreads.
+ * It should be declared as a static variable and initialized with PT_SEM_INIT()
+ * before use. The contents of this structure are internal to the semaphore
+ * implementation and should not be accessed directly by the user.
+ *
+ * \sa PT_SEM_INIT(), PT_SEM_WAIT(), PT_SEM_SIGNAL()
+ */
 struct pt_sem {
   unsigned int count;
 };
