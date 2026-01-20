@@ -63,6 +63,48 @@ Disable building examples:
 cmake -DBUILD_EXAMPLES=OFF ..
 ```
 
+## Testing
+
+The library includes a comprehensive test suite using the [Unity](https://github.com/ThrowTheSwitch/Unity) test framework.
+
+### Running Tests
+
+```bash
+mkdir build && cd build
+cmake ..
+make
+ctest
+```
+
+For verbose output on failures:
+
+```bash
+ctest --output-on-failure
+```
+
+Run a specific test:
+
+```bash
+ctest -R pt_semaphore
+```
+
+### Test Coverage
+
+| Test | Description |
+|------|-------------|
+| `pt_lifecycle` | PT_INIT, PT_BEGIN, PT_END, PT_EXIT, PT_RESTART, return values |
+| `pt_waiting` | PT_WAIT_UNTIL, PT_WAIT_WHILE, PT_YIELD, PT_YIELD_UNTIL |
+| `pt_scheduling` | PT_SCHEDULE, PT_SPAWN, PT_WAIT_THREAD, nested threads |
+| `pt_semaphore` | PT_SEM_INIT, PT_SEM_WAIT, PT_SEM_SIGNAL, producer-consumer |
+| `lc_switch` | Local continuations using switch/case (default) |
+| `lc_addrlabels` | Local continuations using GCC computed goto |
+
+### Disabling Tests
+
+```bash
+cmake -DBUILD_TESTING=OFF ..
+```
+
 ## Usage
 
 Protothreads is a header-only library.
