@@ -17,6 +17,10 @@ The purpose of protothreads is to implement sequential flow of control without c
 - Provides blocking wait without full multi-threading or stack-switching
 - Freely available under a BSD-like open source license
 
+## Documentation
+
+Full API documentation is available at https://idahoavionics.github.io/protothreads/
+
 ## Example Applications
 
 - Memory constrained systems
@@ -33,10 +37,6 @@ The only requirement is that credit is given.
 
 The protothreads library was written by Adam Dunkels <adam@sics.se> with support from Oliver Schmidt <ol.sc@web.de>.
 Learn more at http://www.sics.se/~adam/pt/
-
-## Documentation
-
-Full API documentation can be found in the `doc/` subdirectory.
 
 ## Example Programs
 
