@@ -56,6 +56,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 /* WARNING! lc implementation using switch() does not work if an
    LC_SET() is done within another switch() statement! */
 
