@@ -46,8 +46,7 @@
  *
  */
 
-#ifndef __PT_H__
-#define __PT_H__
+#pragma once
 
 #include "lc.h"
 
@@ -343,7 +342,5 @@ struct pt {
   } while(0)
 
 /** @} */
-
-#endif /* __PT_H__ */
 
 /** @} */

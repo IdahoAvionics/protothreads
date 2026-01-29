@@ -116,17 +116,13 @@
  */
 #endif /* DOXYGEN */
 
-#ifndef __LC_H__
-#define __LC_H__
-
+#pragma once
 
 #ifdef LC_INCLUDE
 #include LC_INCLUDE
 #else
 #include "lc-switch.h"
 #endif /* LC_INCLUDE */
-
-#endif /* __LC_H__ */
 
 /** @} */
 /** @} */

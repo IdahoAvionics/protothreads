@@ -157,10 +157,11 @@ PT_THREAD(driver_thread(struct pt *pt))
  *
  */
 
-#ifndef __PT_SEM_H__
-#define __PT_SEM_H__
+#pragma once
 
 #include "pt.h"
+
+#include <stdint.h>
 
 /**
  * Semaphore control structure.
@@ -173,21 +174,21 @@ PT_THREAD(driver_thread(struct pt *pt))
  * \sa PT_SEM_INIT(), PT_SEM_WAIT(), PT_SEM_SIGNAL()
  */
 struct pt_sem {
-  unsigned int count;
+  uint32_t count;
 };
 
 /**
  * Initialize a semaphore
  *
  * This macro initializes a semaphore with a value for the
- * counter. Internally, the semaphores use an "unsigned int" to
+ * counter. Internally, the semaphores use a uint32_t to
  * represent the counter, and therefore the "count" argument should be
- * within range of an unsigned int.
+ * within range of a 32-bit unsigned integer.
  *
  * \param s (struct pt_sem *) A pointer to the pt_sem struct
  * representing the semaphore
  *
- * \param c (unsigned int) The initial count of the semaphore.
+ * \param c (uint32_t) The initial count of the semaphore.
  * \hideinitializer
  */
 #define PT_SEM_INIT(s, c) (s)->count = c
@@ -230,8 +231,6 @@ struct pt_sem {
  * \hideinitializer
  */
 #define PT_SEM_SIGNAL(pt, s) ++(s)->count
-
-#endif /* __PT_SEM_H__ */
 
 /** @} */
 /** @} */

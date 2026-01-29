@@ -55,8 +55,7 @@
  *
  */
 
-#ifndef __LC_ADDRLABELS_H__
-#define __LC_ADDRLABELS_H__
+#pragma once
 
 /** \hideinitializer */
 typedef void * lc_t;
@@ -81,5 +80,4 @@ typedef void * lc_t;
 
 #define LC_END(s)
 
-#endif /* __LC_ADDRLABELS_H__ */
 /** @} */
